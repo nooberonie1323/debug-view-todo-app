@@ -1,0 +1,125 @@
+/* General styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+/* App layout */
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 40px;
+}
+
+/* To-Do List styles */
+.todo-list {
+  flex: 2; /* Allocate more space to the task list */
+  max-width: 500px; /* Increase maximum width */
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.todo-list input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 10px;
+  width: calc(100% - 120px);
+}
+
+.todo-list button {
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.todo-list button:hover {
+  background-color: #4b00b3;
+}
+
+.todo-list ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  max-height: 300px; /* Add a maximum height */
+  overflow-y: auto; /* Enable scrolling if tasks overflow */
+}
+
+.todo-list li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center; /* Align items vertically */
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.todo-list li input[type="checkbox"] {
+  margin-right: 10px; /* Add space between the checkbox and the text */
+}
+
+.todo-list li span {
+  flex: 1; /* Let the task text take the remaining space */
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.todo-list li .button-group {
+  display: flex; /* Align buttons horizontally */
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 5px; /* Add space between the buttons */
+}
+
+.todo-list li button {
+  padding: 5px 10px;
+  font-size: 14px;
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.todo-list li button:hover {
+  background-color: #4b00b3;
+}
+
+/* Debug View styles */
+.debug-view {
+  flex: 1; /* Allocate less space to the Debug View */
+  max-width: 400px; /* Limit the maximum width */
+  background: #222;
+  color: #fff;
+  padding: 20px;
+  font-size: 14px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Allow scrolling for large content */
+  max-height: 400px; /* Restrict the height */
+}
+
+.debug-view h3 {
+  margin-top: 0;
+}
+
+.debug-view pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
