@@ -1,30 +1,25 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-
-// Debug View Widget Component
 const DebugView = ({ state }) => {
   return (
-    <div style={{ background: "#222", color: "#fff", padding: "10px", fontSize: "14px", overflow: "auto" }}>
+    <div className="debug-view">
       <h3>Debug View</h3>
       <pre>{JSON.stringify(state, null, 2)}</pre>
     </div>
   );
 };
 
-// To-Do List Application
 const TodoApp = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
+
   const [newTask, setNewTask] = useState("");
   const [editIndex, setEditIndex] = useState(null);
 
-  // Load tasks from localStorage
-  useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    setTasks(savedTasks);
-  }, []);
-
-  // Save tasks to localStorage
+  // Save tasks to localStorage whenever tasks change
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
@@ -34,17 +29,16 @@ const TodoApp = () => {
     setTasks([...tasks, { text: newTask, completed: false }]);
     setNewTask("");
   };
-  
 
   const editTask = (index) => {
-    setNewTask(tasks[index]);
+    setNewTask(tasks[index].text);
     setEditIndex(index);
   };
 
   const saveTask = () => {
     if (editIndex !== null) {
       const updatedTasks = [...tasks];
-      updatedTasks[editIndex] = newTask;
+      updatedTasks[editIndex].text = newTask;
       setTasks(updatedTasks);
       setEditIndex(null);
     } else {
@@ -52,14 +46,20 @@ const TodoApp = () => {
     }
     setNewTask("");
   };
+
   const deleteTask = (index) => {
     const updatedTasks = tasks.filter((_, i) => i !== index);
     setTasks(updatedTasks);
   };
-  
+
+  const toggleComplete = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index].completed = !updatedTasks[index].completed;
+    setTasks(updatedTasks);
+  };
+
   return (
     <div className="app-container">
-      {/* Main To-Do List UI */}
       <div className="todo-list">
         <h2>To-Do List</h2>
         <input
@@ -71,36 +71,26 @@ const TodoApp = () => {
         <button onClick={saveTask}>{editIndex !== null ? "Save" : "Add"}</button>
         <ul>
           {tasks.map((task, index) => (
-            <li key={index} className={editIndex === index ? "editing" : ""}>
-            <input
-              type="checkbox"
-              checked={task.completed}
-              onChange={() => {
-                const updatedTasks = [...tasks];
-                updatedTasks[index].completed = !task.completed;
-                setTasks(updatedTasks);
-              }}
-            />
-            <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
-              {task.text}
-            </span>
-            <div className="button-group">
-              <button onClick={() => editTask(index)}>Edit</button>
-              <button onClick={() => deleteTask(index)}>Delete</button>
-            </div>
-          </li>          
+            <li key={index}>
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => toggleComplete(index)}
+              />
+              <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
+                {task.text}
+              </span>
+              <div className="button-group">
+                <button onClick={() => editTask(index)}>Edit</button>
+                <button onClick={() => deleteTask(index)}>Delete</button>
+              </div>
+            </li>
           ))}
         </ul>
       </div>
-  
-      {/* Debug View Widget */}
-      <div className="debug-view">
-        <h3>Debug View</h3>
-        <pre>{JSON.stringify({ tasks, newTask, editIndex }, null, 2)}</pre>
-      </div>
+      <DebugView state={{ tasks, newTask, editIndex }} />
     </div>
   );
-  
 };
 
 export default TodoApp;
